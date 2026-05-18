@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Détails du Client{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <a href="{% url 'client_list' %}" class="btn btn-outline-secondary mb-4">
+        &larr; Retour à la liste
+    </a>
+
+    <div class="card border-primary shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Dossier Client : {{ client.user.first_name }} {{ client.user.last_name }}</h2>
+        </div>
+        <div class="card-body">
+            <h5 class="text-muted mb-4">Informations de contact</h5>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong> Téléphone :</strong> {{ client.telephone }}</li>
+                <li class="list-group-item"><strong> Adresse :</strong> {{ client.adresse }}</li>
+                <li class="list-group-item"><strong> Email :</strong> {{ client.user.email }}</li>
+                <li class="list-group-item"><strong> Nom d'utilisateur :</strong> {{ client.user.username }}</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

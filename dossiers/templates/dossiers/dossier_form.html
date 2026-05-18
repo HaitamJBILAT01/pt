@@ -1,0 +1,39 @@
+{% extends 'base/base.html' %}
+{% load crispy_forms_tags %} 
+
+{% block title %}Nouveau Dossier - Cabinet Pro{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-0 shadow-sm" style="border-radius: 15px; border-top: 5px solid var(--gold-accent) !important;">
+                <div class="card-body p-5">
+                    
+                    <h3 class="fw-bold mb-4" style="color: var(--navy-blue); font-family: 'Playfair Display', serif;">
+                        <i class="fa-solid fa-folder-plus me-2" style="color: var(--gold-accent);"></i> Ouverture d'un Nouveau Dossier
+                    </h3>
+                    
+                    <hr class="mb-4">
+
+                    <form method="post" action="">
+                        {% csrf_token %}
+                        
+                        {{ form|crispy }}
+                        
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary me-2 rounded-pill px-4">Annuler</a>
+                            <button type="submit" class="btn btn-cabinet rounded-pill px-5">
+                                <i class="fa-solid fa-check me-2"></i> Enregistrer le Dossier
+                            </button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

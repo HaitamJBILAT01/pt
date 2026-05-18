@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Détails du Dossier{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <a href="{% url 'dossier_list' %}" class="btn btn-light mb-4 shadow-sm">&larr; Retour aux dossiers</a>
+
+    <div class="card border-dark shadow">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">Détails du Dossier N° {{ dossier.id }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <h4>{{ dossier.titre }}</h4>
+                    <p class="mt-3">{{ dossier.description }}</p>
+                </div>
+                <div class="col-md-4">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Date :</strong> {{ dossier.date_creation|date:"d/m/Y" }}</li>
+                        <li class="list-group-item"><strong>Statut :</strong> {{ dossier.statut }}</li>
+                        <li class="list-group-item"><strong>Client :</strong> {{ dossier.client.user.first_name }} {{ dossier.client.user.last_name }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

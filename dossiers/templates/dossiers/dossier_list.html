@@ -1,0 +1,61 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Liste des Dossiers - Cabinet Pro{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    
+    <div class="d-flex justify-content-between align-items-center mb-5 pb-3" style="border-bottom: 1px solid rgba(0,0,0,0.05);">
+        <div>
+            <h2 class="fw-bold mb-1" style="color: var(--navy-blue); font-family: 'Playfair Display', serif;">
+                <i class="fa-solid fa-folder-open me-2" style="color: var(--gold-accent);"></i> Base des Dossiers
+            </h2>
+            <p class="text-muted mb-0">Consultez et gérez l'ensemble des affaires juridiques.</p>
+        </div>
+        <div>
+            <a href="{% url 'dossier_create' %}" class="btn btn-cabinet shadow-sm rounded-pill px-4 py-2">
+                <i class="fa-solid fa-plus me-2"></i>Nouveau Dossier
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for dossier in dossiers %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm h-100" style="border-radius: 15px; border-left: 4px solid var(--navy-blue) !important;">
+                <div class="card-body p-4">
+                    
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="badge" style="background-color: rgba(197, 160, 89, 0.1); color: var(--gold-accent); border: 1px solid rgba(197, 160, 89, 0.3);">
+                            N° {{ dossier.id }}
+                        </span>
+                        
+                        <span class="badge {% if dossier.statut == 'En cours' %}bg-success{% else %}bg-secondary{% endif %} rounded-pill">
+                            {{ dossier.statut }}
+                        </span>
+                    </div>
+                    
+                    <h5 class="fw-bold mb-3" style="color: var(--navy-blue);">{{ dossier.titre }}</h5>
+                    
+                    <div class="mt-4 text-end">
+                        <a href="{% url 'dossier_detail' dossier.id %}" class="btn btn-sm rounded-pill px-3" style="border: 1px solid var(--navy-blue); color: var(--navy-blue); transition: 0.3s;">
+                            <i class="fa-solid fa-eye me-1"></i> Consulter
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        {% empty %}
+        <div class="col-12 text-center py-5">
+            <div class="p-5 bg-white shadow-sm" style="border-radius: 15px;">
+                <i class="fa-solid fa-folder-open fa-3x mb-3" style="color: #e0e0e0;"></i>
+                <h5 class="text-muted fw-bold">Aucun dossier trouvé.</h5>
+                <p class="text-muted mb-0">Commencez par ajouter votre premier dossier avec le bouton ci-dessus.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

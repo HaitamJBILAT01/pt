@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Liste des Clients{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Nos Clients</h1>
+    <div class="row">
+        {% for client in clients %}
+        <div class="col-sm-12 col-md-6 col-lg-4 py-3">
+            <div class="card border-primary mb-3" style="height: 100%;">
+                <div class="card-header text-white bg-primary">
+                    Client #{{ client.id }}
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">{{ client.user.first_name }} {{ client.user.last_name }}</h4>
+                    <p class="card-text"><strong> Tél :</strong> {{ client.telephone }}</p>
+                    <p class="card-text"><strong> Adresse :</strong> {{ client.adresse }}</p>
+                    <a href="{% url 'client_detail' client.id %}" class="btn btn-outline-primary btn-sm mt-3">Voir les détails</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">Aucun client trouvé dans la base de données.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
