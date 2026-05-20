@@ -2,19 +2,15 @@ from django.db import models
 from django.conf import settings
 
 class Client(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile_client')
+    nom = models.CharField(max_length=100, verbose_name="Nom")
+    prenom = models.CharField(max_length=100, verbose_name="Prénom")
     telephone = models.CharField(max_length=20, blank=True)
     adresse = models.TextField(blank=True)
     photo_cin = models.ImageField(upload_to='clients/cin/', null=True, blank=True, verbose_name="Photo CIN")
     date_ajout = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        # Kay-7awel y-jbed l-Kniya w s-Smiya (First/Last name)
-        full_name = self.user.get_full_name()
-        if full_name:
-            return full_name.upper()
-        # Ila makantsh m-9eyyda, kay-rjje3 l-Username
-        return self.user.username.upper()
+        return f"{self.prenom.title()} {self.nom.upper()}"
 
 class Dossier(models.Model):
     TYPE_CHOICES = [

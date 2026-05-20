@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from dossiers.views import landing_page, dashboard, DossierListView, DossierDetailView, ClientListView, ClientDetailView, DossierCreateView, importer_document, DossierUpdateView
+from dossiers.views import landing_page, dashboard, DossierListView, DossierDetailView, ClientListView, ClientDetailView, DossierCreateView, importer_document, DossierUpdateView, ClientCreateView
 from django.contrib.auth import views as auth_views 
 
 from django.conf import settings
@@ -24,6 +24,8 @@ urlpatterns = [
     # client
     path('clients/', ClientListView.as_view(), name='client_list'),
     path('client/<int:pk>/', ClientDetailView.as_view(), name='client_detail'),
+    path('client/ajouter/', ClientCreateView.as_view(), name='client_create'),
+    
     
     # Authentification
     path('login/', auth_views.LoginView.as_view(template_name='comptes/login.html'), name='login'),

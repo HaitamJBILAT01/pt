@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect
 
 from .models import Dossier, Client, Intervention
-from .forms import DossierForm, DocumentForm
+from .forms import DossierForm, DocumentForm, ClientForm
 
 from datetime import date
 
@@ -90,10 +90,28 @@ class DossierDetailView(DetailView):
     context_object_name = 'dossier'
     
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     template_name = 'dossiers/client_list.html'
     context_object_name = 'clients'
+    paginate_by = 5  # Hna drna Pagination b 5 
+
+    def get_queryset(self):
+        queryset = Client.objects.all().order_by('-id')
+        query = self.request.GET.get('q')
+        if query:
+            queryset = queryset.filter(
+                Q(nom__icontains=query) | 
+                Q(prenom__icontains=query) |
+                Q(telephone__icontains=query)
+            )
+        return queryset
+        
+    def get_context_data(self, **kwargs):
+        # Bash tbqa l-ktaba m-7foda f l-Input d'Recherche
+        context = super().get_context_data(**kwargs)
+        context['search_query'] = self.request.GET.get('q', '')
+        return context
 
 class ClientDetailView(DetailView):
     model = Client
@@ -146,3 +164,10 @@ class DossierUpdateView(LoginRequiredMixin, UpdateView):
         context = super().get_context_data(**kwargs)
         context['is_update'] = True
         return context
+    
+
+class ClientCreateView(LoginRequiredMixin, CreateView):
+    model = Client
+    form_class = ClientForm
+    template_name = 'dossiers/client_form.html'
+    success_url = reverse_lazy('client_list')    

@@ -1,5 +1,5 @@
 from django import forms
-from .models import Dossier, Document
+from .models import Dossier, Document, Client
 
 class DossierForm(forms.ModelForm):
     class Meta:
@@ -17,3 +17,8 @@ class DocumentForm(forms.ModelForm):
     class Meta:
         model = Document
         fields = ['titre', 'fichier']        
+
+class ClientForm(forms.ModelForm):
+    class Meta:
+        model = Client
+        fields = ['prenom', 'nom', 'telephone', 'adresse', 'photo_cin']        

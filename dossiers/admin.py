@@ -6,8 +6,8 @@ from .models import Client, Dossier, Intervention , Audience, Document
 # ==========================================
 @admin.register(Client)
 class ClientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'telephone', 'date_ajout')
-    search_fields = ('user__username', 'user__first_name', 'user__last_name', 'telephone')
+    list_display = ('id', 'nom', 'prenom', 'telephone', 'date_ajout')
+    search_fields = ('nom', 'prenom', 'telephone')
 
 # ==========================================
 # 2. ADMIN DOSSIER (Hna fin kan l-moshkil)

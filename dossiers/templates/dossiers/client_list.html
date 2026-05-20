@@ -1,10 +1,9 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Répertoire des Clients - Cabinet JBILAT{% endblock %}
+{% block title %}Clients - Cabinet JBILAT{% endblock %}
 
 {% block content %}
 <style>
-    /* Variables w Zwaq Premium */
     :root {
         --bg-card: #ffffff;
         --border-color: #ede9e1;
@@ -22,8 +21,8 @@
         color: var(--gold, #b8935a);
         border: 1px solid #ede9e1;
         font-weight: 600;
-        padding: 6px 12px;
-        border-radius: 8px;
+        padding: 4px 10px;
+        border-radius: 6px;
         font-size: 0.75rem;
     }
 
@@ -34,10 +33,8 @@
     
     .table-hover tbody tr:hover {
         background-color: #fcfbf9 !important;
-        transition: background-color 0.2s ease;
     }
 
-    /* 🎨 Bouton d'Ajout (CTA) */
     .btn-action-luxe {
         background: linear-gradient(135deg, var(--gold, #b8935a) 0%, #96733f 100%);
         color: #ffffff !important;
@@ -59,10 +56,9 @@
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
         <div>
             <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Clients</h2>
-            <p class="text-muted mb-0" style="font-size: 0.9rem;">Gérez votre répertoire de contacts et l'historique des affaires.</p>
         </div>
         <div class="mt-3 mt-md-0">
-            <a href="#" class="btn btn-action-luxe d-flex align-items-center">
+            <a href="{% url 'client_create' %}" class="btn btn-action-luxe d-flex align-items-center">
                 <i class="fa-solid fa-user-plus me-2" style="font-size: 1.1rem;"></i> 
                 <span>Nouveau Client</span>
             </a>
@@ -94,55 +90,34 @@
             <table class="table table-hover align-middle mb-0">
                 <thead style="background-color: #fcfbf9; border-bottom: 2px solid #ede9e1;">
                     <tr class="text-uppercase text-muted" style="font-size: 0.7rem; letter-spacing: 0.5px;">
-                        <th class="ps-4 py-3">Identité du Client</th>
-                        <th class="py-3">Contact</th>
-                        <th class="py-3">Adresse</th>
-                        <th class="text-center py-3">Affaires</th>
-                        <th class="text-end pe-4 py-3">Actions</th>
+                        <th class="ps-4 py-2">Identité</th>
+                        <th class="py-2">Contact</th>
+                        <th class="py-2">Adresse</th>
+                        <th class="text-center py-2">Affaires</th>
+                        <th class="text-end pe-4 py-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for client in clients|default:object_list %}
+                    {% for client in clients %}
                     <tr style="border-bottom: 1px solid #f1f3f5;">
                         
                         <td class="ps-4 py-3">
                             <div class="fw-bold" style="color: var(--ink); font-size: 1rem; font-family: 'DM Sans', sans-serif;">
-                                {{ client.user.first_name|default:client.user.username|title }} {{ client.user.last_name|upper }}
-                            </div>
-                            <div class="text-muted mt-1" style="font-size: 0.75rem;">
-                                Ajouté le {{ client.date_ajout|date:"d M Y" }}
+                                {{ client.prenom|title }} {{ client.nom|upper }}
                             </div>
                         </td>
-                        
+
                         <td class="py-3">
                             <div class="text-dark fw-medium" style="font-size: 0.9rem;">
                                 <i class="fa-solid fa-phone me-2 text-muted" style="font-size: 0.8rem;"></i>
                                 {{ client.telephone|default:"Non renseigné" }}
                             </div>
-                            {% if client.user.email %}
+                            {% if client.email %}
                             <div class="text-muted mt-1" style="font-size: 0.8rem;">
                                 <i class="fa-solid fa-envelope me-2 text-muted" style="font-size: 0.8rem;"></i>
-                                {{ client.user.email }}
+                                {{ client.email }}
                             </div>
                             {% endif %}
-                        </td>
-                        
-                        <td class="py-3 text-muted" style="font-size: 0.85rem; max-width: 200px;">
-                            <span class="d-inline-block text-truncate" style="max-width: 180px;">
-                                {{ client.adresse|default:"-" }}
-                            </span>
-                        </td>
-                        
-                        <td class="text-center py-3">
-                            <span class="badge-count">
-                                <i class="fa-solid fa-folder-open me-1"></i> {{ client.dossiers.count }}
-                            </span>
-                        </td>
-                        
-                        <td class="text-end pe-4 py-3">
-                            <a href="{% url 'client_detail' client.id %}" class="btn btn-sm btn-light border text-gold px-3 shadow-sm" style="border-radius: 6px;" title="Ouvrir la fiche client">
-                                Consulter
-                            </a>
                         </td>
                     </tr>
                     {% empty %}
@@ -152,7 +127,6 @@
                                 <i class="fa-solid fa-users-slash fa-3x" style="opacity: 0.15;"></i>
                             </div>
                             <h5 class="brand-font fw-bold mb-1" style="color: var(--ink);">Aucun client trouvé</h5>
-                            <p class="text-muted" style="font-size: 0.9rem;">Le répertoire est vide ou la recherche n'a donné aucun résultat.</p>
                         </td>
                     </tr>
                     {% endfor %}
@@ -161,9 +135,26 @@
         </div>
     </div>
 
-</div>
+    {% if is_paginated %}
+    <div class="d-flex justify-content-between align-items-center mt-3 p-3 bg-white" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+        <span class="text-muted fw-medium" style="font-size: 0.85rem;">
+            Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
+        </span>
+        <div class="btn-group shadow-sm" style="border-radius: 8px;">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-sm btn-light border text-gold px-3">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </a>
+            {% endif %}
 
-<style>
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-sm btn-light border text-gold px-3">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
 {% endblock %}
