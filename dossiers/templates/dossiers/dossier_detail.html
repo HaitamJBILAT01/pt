@@ -88,7 +88,7 @@
         margin-right: 8px;
     }
 
-    /* Boutons Principaux - Contrôle strict dyal l'Hauteur (46px) */
+    /* Boutons Principaux */
     .btn-premium {
         background-color: var(--text-primary);
         color: #ffffff;
@@ -112,6 +112,30 @@
         color: #ffffff;
         transform: translateY(-1px);
         box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    /* 🎨 L-BOUTON JDID DYAL IMPORTER F L-CARD (KAY-POPUP) */
+    .btn-card-action {
+        background-color: var(--text-primary);
+        color: #ffffff;
+        border: none;
+        border-radius: 6px;
+        height: 32px;
+        padding: 0 14px;
+        font-size: 13px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    
+    .btn-card-action:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        background-color: #000000;
+        color: #ffffff;
     }
 
     /* Cartes */
@@ -175,7 +199,6 @@
         padding-bottom: 0;
     }
 
-    /* Flexbox bach nfar9o l'icon 3la l'ktba b 10px */
     .doc-title {
         font-size: 14px;
         font-weight: 500;
@@ -185,7 +208,7 @@
     }
 
     .doc-icon {
-        color: #ef4444; /* Rouge khfif */
+        color: #ef4444; 
     }
 
     /* Bouton d'action secondaire (36px hauteur) */
@@ -210,46 +233,69 @@
         background-color: #f9fafb;
         color: var(--text-primary);
     }
+
+    /* Bouton Modifier (Luxe Outline) */
+    .btn-edit-luxe {
+        background-color: #ffffff;
+        color: var(--ink-soft, #4a4a4a);
+        border: 1px solid #ede9e1;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 10px 20px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+    }
+    .btn-edit-luxe:hover {
+        background-color: #fcfbf9;
+        border-color: var(--gold, #b8935a);
+        color: var(--gold, #b8935a);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(184, 147, 90, 0.12);
+    }
 </style>
 
 <div class="dossier-wrapper">
     <div class="container">
         
-        <div class="page-header">
-            <div class="header-content">
-                <a href="{% url 'dossier_list' %}" class="btn-retour">
+        <div class="page-header d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+            
+            <div class="header-content mb-3 mb-md-0">
+                <a href="{% url 'dossier_list' %}" class="btn-retour text-muted text-decoration-none d-inline-flex align-items-center mb-2" style="font-size: 0.85rem; transition: color 0.2s;">
                     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="currentColor" class="me-2" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
                     </svg>
-                    Retour
+                    Retour aux dossiers
                 </a>
-                <h1 class="page-title">{{ dossier.titre }}</h1>
+
+                <h1 class="page-title fw-bold mb-2" style="color: var(--ink); font-family: 'Cormorant Garamond', serif; font-size: 2.2rem;">
+                    {{ dossier.titre }}
+                </h1>
                 
-                <div class="badges-container">
-                    <span class="badge-minimal">
+                <div class="badges-container d-flex gap-2 align-items-center mt-2">
+                    <span class="badge-minimal px-3 py-1 bg-white border shadow-sm" style="border-radius: 6px; font-size: 0.8rem; font-weight: 500;">
                         {% if dossier.statut == 'En cours' %}
-                            <span class="status-dot" style="background-color: #10b981; box-shadow: 0 0 4px rgba(16,185,129,0.4);"></span>
+                            <span class="status-dot d-inline-block rounded-circle me-1" style="width: 8px; height: 8px; background-color: #10b981; box-shadow: 0 0 4px rgba(16,185,129,0.4);"></span>
                         {% elif dossier.statut == 'Clôturé' %}
-                            <span class="status-dot" style="background-color: #ef4444;"></span>
+                            <span class="status-dot d-inline-block rounded-circle me-1" style="width: 8px; height: 8px; background-color: #ef4444;"></span>
                         {% else %}
-                            <span class="status-dot" style="background-color: #9ca3af;"></span>
+                            <span class="status-dot d-inline-block rounded-circle me-1" style="width: 8px; height: 8px; background-color: #9ca3af;"></span>
                         {% endif %}
                         {{ dossier.statut }}
                     </span>
 
-                    <span class="badge-minimal" style="color: var(--text-secondary);">
+                    <span class="badge-minimal px-3 py-1 bg-light border" style="border-radius: 6px; font-size: 0.8rem; color: var(--text-secondary); font-weight: 500;">
+                        <i class="fa-solid fa-scale-unbalanced me-1" style="color: var(--gold);"></i>
                         {{ dossier.get_type_affaire_display }}
                     </span>
                 </div>
             </div>
-            
-            <div>
-                <button type="button" class="btn-premium" data-bs-toggle="modal" data-bs-target="#importerModal">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-arrow-up-fill me-2" viewBox="0 0 16 16">
-                      <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0z"/>
-                    </svg>
-                    Importer document
-                </button>
+
+            <div class="header-actions d-flex gap-3 align-items-center">
+                <a href="{% url 'dossier_update' dossier.id %}" class="btn btn-edit-luxe shadow-sm text-decoration-none">
+                    <i class="fa-solid fa-pen me-2"></i> Modifier le dossier
+                </a>
             </div>
         </div>
 
@@ -302,11 +348,21 @@
 
             <div class="col-lg-8">
                 <div class="premium-card h-100">
-                    <h2 class="card-heading d-flex justify-content-between align-items-center">
+                    
+                    <h2 class="card-heading d-flex justify-content-between align-items-center m-0 pb-3 mb-4" style="border-bottom: 1px solid var(--border-color);">
                         <span>Documents Joints</span>
-                        <span class="badge text-dark border" style="font-weight: 500; background-color: #fff !important; font-size: 12px; padding: 6px 10px;">
-                            {{ dossier.documents.count }} Fichier(s)
-                        </span>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge text-dark border" style="font-weight: 500; background-color: #fff !important; font-size: 12px; padding: 6px 10px;">
+                                {{ dossier.documents.count }} Fichier(s)
+                            </span>
+                            
+                            <button type="button" class="btn-card-action" data-bs-toggle="modal" data-bs-target="#importerModal">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-cloud-arrow-up-fill" viewBox="0 0 16 16">
+                                  <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2m2.354 5.146a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2a.5.5 0 0 1 .708 0z"/>
+                                </svg>
+                                Importer
+                            </button>
+                        </div>
                     </h2>
                     
                     <div class="documents-list">

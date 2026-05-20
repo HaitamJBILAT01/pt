@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
@@ -130,3 +130,19 @@ def importer_document(request, pk):
             
     # Kan-redirigiw l'utilisateur l'nfs la page mn b3d l'ajout
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+class DossierUpdateView(LoginRequiredMixin, UpdateView):
+    model = Dossier
+    form_class = DossierForm
+    template_name = 'dossiers/dossier_form.html' # Kan-khedmou b nfs d-Design l-Wa3er!
+    
+    def get_success_url(self):
+        # Mnin l'Avocat y-modifier d-dossier, Django ghay-rjj3o l'Page d-Détails bash y-shouf t-taghyirat
+        return reverse_lazy('dossier_detail', kwargs={'pk': self.object.pk})
+    
+    def get_context_data(self, **kwargs):
+        # Hadi ghir bash n-goulou l'HTML rahna f wde3 "Modification" machi "Ajout"
+        context = super().get_context_data(**kwargs)
+        context['is_update'] = True
+        return context

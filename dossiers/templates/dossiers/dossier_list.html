@@ -152,7 +152,7 @@
                                 <a href="{% url 'dossier_detail' dossier.id %}" class="btn btn-sm btn-light border-end text-gold px-3" title="Ouvrir le dossier">
                                     <i class="fa-solid fa-folder-open"></i>
                                 </a>
-                                <a href="#" class="btn btn-sm btn-light text-secondary px-3" title="Modifier les informations">
+                                <a href="{% url 'dossier_update' dossier.id %}" class="btn btn-sm btn-light text-secondary px-3" title="Modifier les informations">
                                     <i class="fa-solid fa-pen"></i>
                                 </a>
                             </div>

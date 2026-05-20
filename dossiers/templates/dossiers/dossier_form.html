@@ -101,7 +101,12 @@
 <div class="container-fluid p-0 form-wrapper fade-up" style="animation: fadeIn 0.5s ease;">
     
     <div class="mb-4 text-center">
-        <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Ouvrir un Nouveau Dossier</h2>
+        {% if is_update %}
+            <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Modifier le Dossier</h2>
+            <p class="text-muted" style="font-size: 0.9rem;">Mettez à jour les informations de l'affaire.</p>
+        {% else %}
+            <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Ouvrir un Nouveau Dossier</h2>
+        {% endif %}
     </div>
 
     <div class="form-luxe border-top border-3" style="border-color: var(--gold) !important;">
@@ -147,7 +152,8 @@
                     <i class="fa-solid fa-xmark me-1"></i> Annuler
                 </a>
                 <button type="submit" class="btn btn-submit-luxe px-4 shadow-sm" style="border-radius: 8px;">
-                    <i class="fa-solid fa-check me-2"></i> Enregistrer le dossier
+                    <i class="fa-solid {% if is_update %}fa-floppy-disk{% else %}fa-check{% endif %} me-2"></i> 
+                    {% if is_update %}Sauvegarder les modifications{% else %}Enregistrer le dossier{% endif %}
                 </button>
             </div>
         </form>
