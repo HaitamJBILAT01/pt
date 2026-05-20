@@ -4,63 +4,21 @@
 
 {% block content %}
 <style>
-    :root {
-        --bg-card: #ffffff;
-        --border-color: #ede9e1;
-    }
-
-    .luxe-card {
-        background-color: var(--bg-card);
-        border-radius: 12px;
-        border: none;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    }
-    
-    .badge-count {
-        background-color: #fcfbf9;
-        color: var(--gold, #b8935a);
-        border: 1px solid #ede9e1;
-        font-weight: 600;
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-size: 0.75rem;
-    }
-
-    .search-input:focus {
-        border-color: var(--gold);
-        box-shadow: 0 0 0 0.25rem rgba(184, 147, 90, 0.15);
-    }
-    
-    .table-hover tbody tr:hover {
-        background-color: #fcfbf9 !important;
-    }
-
-    .btn-action-luxe {
-        background: linear-gradient(135deg, var(--gold, #b8935a) 0%, #96733f 100%);
-        color: #ffffff !important;
-        border: none;
-        font-weight: 600;
-        padding: 10px 20px;
-        border-radius: 8px;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(184, 147, 90, 0.25);
-    }
-    .btn-action-luxe:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(184, 147, 90, 0.4) !important;
-    }
+    :root { --bg-card: #ffffff; --border-color: #ede9e1; }
+    .luxe-card { background-color: var(--bg-card); border-radius: 12px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+    .badge-count { background-color: #fcfbf9; color: var(--gold, #b8935a); border: 1px solid #ede9e1; font-weight: 600; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; }
+    .search-input:focus { border-color: var(--gold); box-shadow: 0 0 0 0.25rem rgba(184, 147, 90, 0.15); }
+    .table-hover tbody tr:hover { background-color: #fcfbf9 !important; }
+    .btn-action-luxe { background: linear-gradient(135deg, var(--gold, #b8935a) 0%, #96733f 100%); color: #ffffff !important; border: none; font-weight: 600; padding: 10px 20px; border-radius: 8px; transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(184, 147, 90, 0.25); text-decoration: none; }
+    .btn-action-luxe:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(184, 147, 90, 0.4) !important; }
 </style>
 
-<div class="container-fluid p-0 fade-up" style="animation: fadeIn 0.5s ease;">
-
+<div class="container-fluid p-0">
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
-        <div>
-            <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Clients</h2>
-        </div>
+        <div><h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Clients</h2></div>
         <div class="mt-3 mt-md-0">
             <a href="{% url 'client_create' %}" class="btn btn-action-luxe d-flex align-items-center">
-                <i class="fa-solid fa-user-plus me-2" style="font-size: 1.1rem;"></i> 
-                <span>Nouveau Client</span>
+                <i class="fa-solid fa-user-plus me-2"></i> <span>Nouveau Client</span>
             </a>
         </div>
     </div>
@@ -70,17 +28,11 @@
             <div class="row g-2">
                 <div class="col-md-10">
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0" style="color: var(--gold);">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </span>
-                        <input type="text" name="q" class="form-control border-start-0 search-input ps-0" 
-                               placeholder="Rechercher par Nom, Prénom ou Téléphone..." 
-                               value="{{ search_query|default:'' }}">
+                        <span class="input-group-text bg-white border-end-0" style="color: var(--gold);"><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="text" name="q" class="form-control border-start-0 search-input ps-0" placeholder="Rechercher par Nom, Prénom ou Téléphone..." value="{{ search_query|default:'' }}">
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-dark w-100" style="border-radius: 8px;">Rechercher</button>
-                </div>
+                <div class="col-md-2"><button type="submit" class="btn btn-dark w-100" style="border-radius: 8px;">Rechercher</button></div>
             </div>
         </form>
     </div>
@@ -100,35 +52,29 @@
                 <tbody>
                     {% for client in clients %}
                     <tr style="border-bottom: 1px solid #f1f3f5;">
-                        
                         <td class="ps-4 py-3">
                             <div class="fw-bold" style="color: var(--ink); font-size: 1rem; font-family: 'DM Sans', sans-serif;">
                                 {{ client.prenom|title }} {{ client.nom|upper }}
                             </div>
                         </td>
-
                         <td class="py-3">
                             <div class="text-dark fw-medium" style="font-size: 0.9rem;">
-                                <i class="fa-solid fa-phone me-2 text-muted" style="font-size: 0.8rem;"></i>
-                                {{ client.telephone|default:"Non renseigné" }}
+                                <i class="fa-solid fa-phone me-2 text-muted" style="font-size: 0.8rem;"></i>{{ client.telephone|default:"Non renseigné" }}
                             </div>
                             {% if client.email %}
                             <div class="text-muted mt-1" style="font-size: 0.8rem;">
-                                <i class="fa-solid fa-envelope me-2 text-muted" style="font-size: 0.8rem;"></i>
-                                {{ client.email }}
+                                <i class="fa-solid fa-envelope me-2 text-muted" style="font-size: 0.8rem;"></i>{{ client.email }}
                             </div>
                             {% endif %}
                         </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center py-5">
-                            <div class="text-muted mb-3">
-                                <i class="fa-solid fa-users-slash fa-3x" style="opacity: 0.15;"></i>
-                            </div>
-                            <h5 class="brand-font fw-bold mb-1" style="color: var(--ink);">Aucun client trouvé</h5>
+                        <td class="py-3 text-muted" style="font-size: 0.85rem;"><span class="d-inline-block text-truncate" style="max-width: 180px;">{{ client.adresse|default:"-" }}</span></td>
+                        <td class="text-center py-3"><span class="badge-count"><i class="fa-solid fa-folder-open me-1"></i> {{ client.dossiers.count }}</span></td>
+                        <td class="text-end pe-4 py-3">
+                            <a href="{% url 'client_detail' client.id %}" class="btn btn-sm btn-light border text-gold px-3 shadow-sm" style="border-radius: 6px;">Consulter</a>
                         </td>
                     </tr>
+                    {% empty %}
+                    <tr><td colspan="5" class="text-center py-5"><h5 class="brand-font fw-bold mb-1" style="color: var(--ink);">Aucun client trouvé</h5></td></tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -137,24 +83,16 @@
 
     {% if is_paginated %}
     <div class="d-flex justify-content-between align-items-center mt-3 p-3 bg-white" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
-        <span class="text-muted fw-medium" style="font-size: 0.85rem;">
-            Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}
-        </span>
+        <span class="text-muted fw-medium" style="font-size: 0.85rem;">Page {{ page_obj.number }} sur {{ page_obj.paginator.num_pages }}</span>
         <div class="btn-group shadow-sm" style="border-radius: 8px;">
             {% if page_obj.has_previous %}
-                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-sm btn-light border text-gold px-3">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </a>
+                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-sm btn-light border text-gold px-3"><i class="fa-solid fa-chevron-left"></i></a>
             {% endif %}
-
             {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-sm btn-light border text-gold px-3">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </a>
+                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}" class="btn btn-sm btn-light border text-gold px-3"><i class="fa-solid fa-chevron-right"></i></a>
             {% endif %}
         </div>
     </div>
     {% endif %}
-
 </div>
 {% endblock %}
