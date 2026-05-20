@@ -5,8 +5,10 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
+from django.shortcuts import get_object_or_404, redirect
+
 from .models import Dossier, Client, Intervention
-from .forms import DossierForm
+from .forms import DossierForm, DocumentForm
 
 from datetime import date
 
@@ -107,3 +109,24 @@ class DossierCreateView(LoginRequiredMixin, CreateView):
     form_class = DossierForm
     template_name = 'dossiers/dossier_form.html'
     success_url = reverse_lazy('dashboard')
+
+
+
+
+def importer_document(request, pk):
+    # Kanjbdou l'dossier li bghina nzidou fih l'fichier
+    dossier = get_object_or_404(Dossier, pk=pk)
+    
+    if request.method == 'POST':
+        # Meli katkon image wla fichier, Dima khasna (request.POST, request.FILES)
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Kanssjou l'document wlakin makan-validiwch f l'base de données (commit=False)
+            document = form.save(commit=False)
+            # Kanrbtoh m3a l'dossier dyalna
+            document.dossier = dossier
+            # 3ad kanssjlo kolchi
+            document.save()
+            
+    # Kan-redirigiw l'utilisateur l'nfs la page mn b3d l'ajout
+    return redirect(request.META.get('HTTP_REFERER', '/'))

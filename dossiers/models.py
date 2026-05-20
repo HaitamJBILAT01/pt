@@ -70,7 +70,7 @@ class Audience(models.Model):
 class Document(models.Model):
     dossier = models.ForeignKey(Dossier, on_delete=models.CASCADE, related_name='documents')
     titre = models.CharField(max_length=250)
-    fichier = models.FileField(upload_to='dossiers/documents/') 
+    fichier = models.FileField(upload_to='dossiers/documents/' , null=True, blank=True) 
     date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

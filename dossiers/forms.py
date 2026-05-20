@@ -1,5 +1,5 @@
 from django import forms
-from .models import Dossier
+from .models import Dossier, Document
 
 class DossierForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,9 @@ class DossierForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
+
+
+class DocumentForm(forms.ModelForm):
+    class Meta:
+        model = Document
+        fields = ['titre', 'fichier']        
