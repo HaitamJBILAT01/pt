@@ -1,90 +1,196 @@
 {% extends 'base/base.html' %}
 
-{% block title %}Tableau de Bord - Cabinet Pro{% endblock %}
+{% block title %}Tableau de Bord - Cabinet JBILAT{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* CSS Qliiiil ghir l'dakshi li makaynsh f Bootstrap (Hover w l-Alwan) */
+    .hover-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .hover-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.05) !important;
+    }
+    
+    /* Ar9am nqiyin b l-khet l-3adi */
+    .kpi-number {
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+</style>
+{% endblock %}
 
 {% block content %}
-<div class="container-fluid px-0">
-    
-    {% if user.is_authenticated %}
+<div class="container-fluid p-0">
+
+    <div class="d-flex justify-content-end mb-4">
+        <div class="text-secondary fw-medium d-flex align-items-center" style="font-size: 0.9rem;">
+            <i class="fa-regular fa-calendar-days me-2" style="color: var(--gold);"></i>
+            <span id="js-date"></span>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-5">
         
-        <div class="d-flex justify-content-between align-items-center mb-5 pb-3" style="border-bottom: 1px solid rgba(0,0,0,0.05);">
-            <div>
-                <h2 class="fw-bold mb-1" style="color: var(--navy-blue); font-family: 'Playfair Display', serif;">Aperçu du Cabinet</h2>
-                <p class="text-muted mb-0">Bienvenue sur votre espace de gestion juridique.</p>
-            </div>
-            <div>
-                {% if user.is_staff %}
-                <a href="{% url 'dossier_create' %}" class="btn btn-cabinet px-4 py-2 shadow-sm rounded-pill">
-                    <i class="fa-solid fa-folder-plus me-2"></i>Nouveau Dossier
-                </a>
-                {% endif %}
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100 hover-card border-top border-3" style="border-color: var(--ink) !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-secondary fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Dossiers</span>
+                        <i class="fa-solid fa-folder-open fs-5" style="color: var(--ink);"></i>
+                    </div>
+                    <h2 class="mb-0 kpi-number" style="color: var(--ink); font-size: 2.5rem;">{{ total_dossiers }}</h2>
+                </div>
             </div>
         </div>
 
-        {% if user.is_staff %}
-        <div class="row g-4 mb-5">
-            
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100" style="border-radius: 15px; border-left: 5px solid var(--navy-blue) !important;">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase text-muted mb-2 fw-bold" style="letter-spacing: 1px; font-size: 0.8rem;">Total Dossiers</h6>
-                                <h2 class="display-5 fw-bold mb-0" style="color: var(--navy-blue);">{{ total_dossiers|default:"0" }}</h2>
-                            </div>
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: rgba(26, 37, 48, 0.1);">
-                                <i class="fa-solid fa-briefcase fa-2x" style="color: var(--navy-blue);"></i>
-                            </div>
-                        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100 hover-card border-top border-3" style="border-color: var(--gold) !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-secondary fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">En Cours</span>
+                        <i class="fa-solid fa-spinner fs-5" style="color: var(--gold);"></i>
                     </div>
+                    <h2 class="mb-0 kpi-number" style="color: var(--gold); font-size: 2.5rem;">{{ dossiers_en_cours }}</h2>
                 </div>
             </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100" style="border-radius: 15px; border-left: 5px solid var(--gold-accent) !important;">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase text-muted mb-2 fw-bold" style="letter-spacing: 1px; font-size: 0.8rem;">Dossiers En Cours</h6>
-                                <h2 class="display-5 fw-bold mb-0" style="color: var(--gold-accent);">{{ dossiers_en_cours|default:"0" }}</h2>
-                            </div>
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: rgba(197, 160, 89, 0.1);">
-                                <i class="fa-solid fa-scale-balanced fa-2x" style="color: var(--gold-accent);"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card border-0 shadow-sm h-100" style="border-radius: 15px; border-left: 5px solid #27ae60 !important;">
-                    <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h6 class="text-uppercase text-muted mb-2 fw-bold" style="letter-spacing: 1px; font-size: 0.8rem;">Total Clients</h6>
-                                <h2 class="display-5 fw-bold mb-0" style="color: #27ae60;">{{ total_clients|default:"0" }}</h2>
-                            </div>
-                            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 60px; height: 60px; background-color: rgba(39, 174, 96, 0.1);">
-                                <i class="fa-solid fa-users fa-2x" style="color: #27ae60;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
-        {% else %}
-        <div class="alert alert-info border-0 shadow-sm" style="background-color: white; border-left: 4px solid var(--gold-accent) !important;">
-            <h5 class="mb-1"><i class="fa-solid fa-circle-info me-2 text-warning"></i> Espace Client</h5>
-            <p class="mb-0 text-muted">Veuillez utiliser le menu à gauche pour consulter l'état de votre dossier ou télécharger vos documents.</p>
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100 hover-card border-top border-3" style="border-color: #4a6b5a !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-secondary fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Clients</span>
+                        <i class="fa-solid fa-users fs-5" style="color: #4a6b5a;"></i>
+                    </div>
+                    <h2 class="mb-0 kpi-number" style="color: #4a6b5a; font-size: 2.5rem;">{{ total_clients }}</h2>
+                </div>
+            </div>
         </div>
-        {% endif %}
+
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4 h-100 hover-card border-top border-3" style="border-color: #c0514a !important;">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <span class="text-uppercase text-secondary fw-bold" style="font-size: 0.7rem; letter-spacing: 1px;">Prochaine Action</span>
+                        <i class="fa-solid fa-calendar-check fs-5" style="color: #c0514a;"></i>
+                    </div>
+                    {% if prochaine_intervention %}
+                        <h4 class="mb-0 kpi-number" style="color: #c0514a; font-size: 1.5rem;">{{ prochaine_intervention.date_intervention|date:"d M Y" }}</h4>
+                    {% else %}
+                        <h4 class="mb-0 text-secondary kpi-number">—</h4>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row g-4">
         
-    {% else %}
-        <div class="text-center mt-5">
-            <h1 class="display-4">Connectez-vous</h1>
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-header bg-white border-bottom-0 p-4 d-flex justify-content-between align-items-center">
+                    <h5 class="brand-font fw-bold mb-0" style="color: var(--ink); font-size: 1.5rem;">Dossiers Récents</h5>
+                    <a href="{% url 'dossier_list' %}" class="text-decoration-none fw-medium" style="color: var(--gold); font-size: 0.9rem;">
+                        Voir tout <i class="fa-solid fa-arrow-right ms-1"></i>
+                    </a>
+                </div>
+                
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light text-uppercase text-secondary" style="font-size: 0.75rem;">
+                                <tr>
+                                    <th class="ps-4 py-3">N°</th>
+                                    <th class="py-3">Titre</th>
+                                    <th class="py-3">Statut</th>
+                                    <th class="text-end pe-4 py-3">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for dossier in dossiers_recents %}
+                                <tr>
+                                    <td class="ps-4 py-3 fw-bold kpi-number" style="color: var(--gold); font-size: 0.9rem;">#{{ dossier.id }}</td>
+                                    <td class="py-3 fw-medium" style="color: var(--ink);">{{ dossier.titre }}</td>
+                                    <td class="py-3">
+                                        <span class="badge rounded-pill {% if dossier.statut == 'En cours' %}bg-success bg-opacity-10 text-success{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} fw-medium px-3 py-2">
+                                            {{ dossier.statut }}
+                                        </span>
+                                    </td>
+                                    <td class="text-end pe-4 py-3">
+                                        <a href="{% url 'dossier_detail' dossier.id %}" class="btn btn-sm btn-light rounded-3" style="color: var(--gold);">
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-secondary fst-italic">
+                                        Aucun dossier pour le moment.
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
-    {% endif %}
 
+        <div class="col-lg-4">
+            <div class="d-flex flex-column gap-4 h-100">
+                
+                <div class="card border-0 shadow-sm rounded-4 p-4">
+                    <h5 class="brand-font fw-bold mb-4" style="color: var(--ink); font-size: 1.5rem;">Actions Rapides</h5>
+                    
+                    <a href="{% url 'dossier_create' %}" class="btn btn-cabinet w-100 d-flex align-items-center p-3 mb-3 text-start border-0 shadow-sm">
+                        <div class="bg-white rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; color: var(--ink);">
+                            <i class="fa-solid fa-folder-plus"></i>
+                        </div>
+                        <div>
+                            <span class="d-block fw-bold mb-1" style="font-size: 0.95rem;">Nouveau Dossier</span>
+                            <span class="text-white-50" style="font-size: 0.75rem;">Créer un dossier client</span>
+                        </div>
+                    </a>
+
+                    <a href="#" class="btn btn-light w-100 d-flex align-items-center p-3 text-start border" style="border-radius: 8px;">
+                        <div class="rounded d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; background-color: rgba(184, 147, 90, 0.1); color: var(--gold);">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <div>
+                            <span class="d-block fw-bold mb-1" style="color: var(--ink); font-size: 0.95rem;">Nouveau Client</span>
+                            <span class="text-secondary" style="font-size: 0.75rem;">Enregistrer un client</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 p-4 flex-grow-1 position-relative overflow-hidden" style="background-color: var(--ink); color: white;">
+                    <i class="fa-solid fa-gavel position-absolute" style="font-size: 8rem; right: -20px; bottom: -20px; color: rgba(255, 255, 255, 0.05);"></i>
+                    
+                    {% if prochaine_intervention %}
+                        <span class="text-uppercase fw-bold d-block mb-3" style="color: var(--gold); font-size: 0.7rem; letter-spacing: 1px;">Prochaine Intervention</span>
+                        <h3 class="brand-font fw-bold mb-2">{{ prochaine_intervention.date_intervention|date:"d M Y" }}</h3>
+                        <p class="text-white-50 mb-0" style="font-size: 0.85rem;">{{ prochaine_intervention.titre|default:"Intervention planifiée" }}</p>
+                    {% else %}
+                        <span class="text-uppercase fw-bold d-block mb-3" style="color: var(--gold); font-size: 0.7rem; letter-spacing: 1px;">Agenda</span>
+                        <h3 class="brand-font fw-bold mb-2 text-white-50">Aucune action</h3>
+                        <p class="text-white-50 mb-0" style="font-size: 0.85rem;">Votre agenda est libre.</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
 </div>
+
+<script>
+    // Script bash y-jbed tarikh
+    const d = new Date();
+    const opts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    document.getElementById('js-date').textContent = d.toLocaleDateString('fr-FR', opts);
+</script>
 {% endblock %}

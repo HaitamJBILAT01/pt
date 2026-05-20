@@ -4,10 +4,10 @@ from .models import Dossier
 class DossierForm(forms.ModelForm):
     class Meta:
         model = Dossier
-        # Hna kan-goulou l'Django achno homa l'khaanat li bghinahom ybano f l'Formulaire
-        fields = ['titre', 'client', 'description', 'statut'] 
+        # Hna zedna ga3 l-champs bash Crispy y-rsemhom f HTML
+        fields = ['titre', 'client', 'type_affaire', 'statut', 'partie_adverse', 'tribunal', 'description']
         
-        # Zwaq sghir bash l'Formulaire yban zwin
+        # (Optionnel) Ila bghiti t-sgher textarea mn hna:
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
