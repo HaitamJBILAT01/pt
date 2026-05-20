@@ -98,6 +98,15 @@ class DossierCreateView(LoginRequiredMixin, CreateView):
     template_name = 'dossiers/dossier_form.html'
     success_url = reverse_lazy('dossier_list')
 
+    def get_initial(self):
+        initial = super().get_initial()
+        # Kat-qleb f l-Lien wach siftna lih chi ID dyal chi client
+        client_id = self.request.GET.get('client')
+        if client_id:
+            # Ila lqato, kat-dir l-Client Howa li m-khtar Par Défaut f l-Formulaire!
+            initial['client'] = client_id
+        return initial
+
 class DossierUpdateView(LoginRequiredMixin, UpdateView):
     model = Dossier
     form_class = DossierForm
