@@ -4,7 +4,7 @@
 
 {% block content %}
 <style>
-    /* Nfs l-Variables w l-Alwan d-l'Cabinet */
+    /* Variables w Alwan d-l'Cabinet */
     :root {
         --text-primary: #1d1d1f;
         --text-secondary: #737373;
@@ -91,7 +91,7 @@
                 </div>
             </div>
             <div>
-                <a href="#" class="btn btn-light border shadow-sm px-4" style="border-radius: 8px; font-weight: 600;">
+                <a href="{% url 'client_update' client.id %}" class="btn btn-light border shadow-sm px-4" style="border-radius: 8px; font-weight: 600;">
                     <i class="fa-solid fa-pen me-2 text-secondary"></i> Modifier le profil
                 </a>
             </div>
@@ -103,15 +103,15 @@
                     <h2 class="card-heading">Coordonnées</h2>
                     <div class="info-grid">
                         <div class="info-group">
+                            <span class="info-label"><i class="fa-solid fa-user text-muted me-1"></i> Identité Complète</span>
+                            <span class="info-value">{{ client.prenom|title }} {{ client.nom|upper }}</span>
+                        </div>
+                        <div class="info-group">
                             <span class="info-label"><i class="fa-solid fa-phone text-muted me-1"></i> Téléphone</span>
                             <span class="info-value">{{ client.telephone|default:"Non renseigné" }}</span>
                         </div>
                         <div class="info-group">
-                            <span class="info-label"><i class="fa-solid fa-envelope text-muted me-1"></i> Email</span>
-                            <span class="info-value">{{ client.email|default:"Non renseigné" }}</span>
-                        </div>
-                        <div class="info-group">
-                            <span class="info-label"><i class="fa-solid fa-location-dot text-muted me-1"></i> Adresse Complète</span>
+                            <span class="info-label"><i class="fa-solid fa-location-dot text-muted me-1"></i> Adresse</span>
                             <span class="info-value">{{ client.adresse|default:"Aucune adresse enregistrée" }}</span>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                         
                         <div class="d-flex align-items-center gap-2">
                             <span class="badge text-dark border bg-white" style="font-weight: 500;">
-                                {{ client.dossier_set.count }} Dossier(s)
+                                {{ client.dossiers.count }} Dossier(s)
                             </span>
                             
                             <a href="{% url 'dossier_create' %}?client={{ client.id }}" class="btn-card-action">
@@ -146,7 +146,7 @@
                     </h2>
                     
                     <div class="documents-list">
-                        {% for dossier in client.dossier_set.all %}
+                        {% for dossier in client.dossiers.all %}
                             <a href="{% url 'dossier_detail' dossier.id %}" class="doc-item">
                                 <div class="d-flex align-items-center gap-3">
                                     <div style="color: var(--gold); background: #fff; padding: 8px; border-radius: 8px; border: 1px solid var(--border-color);">

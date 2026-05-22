@@ -31,7 +31,9 @@
 <div class="container-fluid p-0 fade-up" style="animation: fadeIn 0.5s ease; padding-top: 15px; padding-bottom: 40px;">
     
     <div class="mb-4 text-center">
-        <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">Ajouter un Client</h2>
+        <h2 class="brand-font fw-bold mb-1" style="color: var(--ink); font-size: 2.2rem;">
+            {% if is_update %}Modifier le Client{% else %}Ajouter un Client{% endif %}
+        </h2>
     </div>
 
     <div class="form-luxe">
@@ -60,7 +62,8 @@
             <div class="d-flex justify-content-end gap-3 mt-4 pt-3 border-top" style="border-color: #ede9e1 !important;">
                 <a href="{% url 'client_list' %}" class="btn btn-light border px-4 shadow-sm" style="border-radius: 8px; font-weight: 500;">Annuler</a>
                 <button type="submit" class="btn btn-submit-luxe px-4 shadow-sm" style="border-radius: 8px;">
-                    <i class="fa-solid fa-user-check me-2"></i> Enregistrer
+                    <i class="fa-solid fa-user-check me-2"></i> 
+                    {% if is_update %}Mettre à jour{% else %}Enregistrer{% endif %}
                 </button>
             </div>
         </form>

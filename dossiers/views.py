@@ -135,3 +135,18 @@ def importer_document(request, pk):
             document.dossier = dossier
             document.save()
     return redirect(request.META.get('HTTP_REFERER', '/'))
+
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
+    model = Client
+    form_class = ClientForm
+    template_name = 'dossiers/client_form.html'
+    
+    def get_success_url(self):
+        # Mnin t-beddel, rje3 l'Page d'l'Client
+        return reverse_lazy('client_detail', kwargs={'pk': self.object.pk})
+    
+    def get_context_data(self, **kwargs):
+        # Hadi ghan-khedmou biha f HTML bash n-bedlou l-Smiya d'Titres
+        context = super().get_context_data(**kwargs)
+        context['is_update'] = True
+        return context
